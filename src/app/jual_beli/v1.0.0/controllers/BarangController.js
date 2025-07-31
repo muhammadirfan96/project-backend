@@ -1,7 +1,7 @@
 import BarangModel from "../models/BarangModel.js";
-import CustomError from "../../../utils/CustomError.js";
+import CustomError from "../../../../utils/CustomError.js";
 import { unlinkSync, unlink, existsSync } from "fs";
-import { upload } from "../../../middlewares/imageUpload.js";
+import { upload } from "../../../../middlewares/imageUpload.js";
 
 const showBarang = async (req, res, next) => {
   try {

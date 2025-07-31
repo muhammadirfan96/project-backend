@@ -1,7 +1,7 @@
 import { body, param, query } from "express-validator";
 import BarangModel from "../../models/BarangModel.js";
 import PenjualModel from "../../models/PenjualModel.js";
-import runValidation from "../../../../middlewares/runValidation.js";
+import runValidation from "../../../../../middlewares/runValidation.js";
 
 const ValidationPembelianBarang = [
   body("kode")
