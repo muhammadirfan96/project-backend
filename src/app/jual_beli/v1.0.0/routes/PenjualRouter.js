@@ -13,7 +13,7 @@ import {
   updatePenjualValidation,
   deletePenjualValidation,
 } from "../validations/PenjualValidation.js";
-import verifyToken from "../../../middlewares/verifyToken.js";
+import verifyToken from "../../../../middlewares/verifyToken.js";
 
 const PenjualRouter = express.Router();
 

@@ -5,7 +5,7 @@ import {
   createEquipmentLimaes,
   updateEquipmentLimaes,
   deleteEquipmentLimaes,
-} from "../controllers/EquipmentLimaesControllers.js";
+} from "../controllers/EquipmentLimaesController.js";
 import {
   showEquipmentLimaesValidation,
   findEquipmentLimaesValidation,
@@ -13,7 +13,7 @@ import {
   updateEquipmentLimaesValidation,
   deleteEquipmentLimaesValidation,
 } from "../validations/EquipmentLimaesValidation.js";
-import verifyToken from "../../../middlewares/verifyToken.js";
+import verifyToken from "../../../../middlewares/verifyToken.js";
 
 const EquipmentLimaesRouter = express.Router();
 

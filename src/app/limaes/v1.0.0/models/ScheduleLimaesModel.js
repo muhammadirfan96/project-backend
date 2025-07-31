@@ -22,6 +22,6 @@ const schema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const ScheduleLimaesModels = mongoose.model("schedulelimaes", schema);
+const ScheduleLimaesModel = mongoose.model("schedulelimaes", schema);
 
-export default ScheduleLimaesModels;
+export default ScheduleLimaesModel;

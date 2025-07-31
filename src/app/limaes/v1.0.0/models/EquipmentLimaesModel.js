@@ -11,6 +11,6 @@ const schema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const EquipmentLimaesModels = mongoose.model("equipmentlimaes", schema);
+const EquipmentLimaesModel = mongoose.model("equipmentlimaes", schema);
 
-export default EquipmentLimaesModels;
+export default EquipmentLimaesModel;

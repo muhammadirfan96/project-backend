@@ -7,7 +7,7 @@ import {
   deleteUserLimaes,
   uploadPicture,
   uploadTtd,
-} from "../controllers/UserLimaesControllers.js";
+} from "../controllers/UserLimaesController.js";
 import {
   showUserLimaesValidation,
   findUserLimaesValidation,
@@ -17,7 +17,7 @@ import {
   uploadPictureValidation,
   uploadTtdValidation,
 } from "../validations/UserLimaesValidation.js";
-import verifyToken from "../../../middlewares/verifyToken.js";
+import verifyToken from "../../../../middlewares/verifyToken.js";
 
 const UserLimaesRouter = express.Router();
 

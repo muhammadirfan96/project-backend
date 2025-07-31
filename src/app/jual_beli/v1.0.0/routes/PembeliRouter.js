@@ -13,7 +13,7 @@ import {
   updatePembeliValidation,
   deletePembeliValidation,
 } from "../validations/PembeliValidation.js";
-import verifyToken from "../../../middlewares/verifyToken.js";
+import verifyToken from "../../../../middlewares/verifyToken.js";
 
 const PembeliRouter = express.Router();
 

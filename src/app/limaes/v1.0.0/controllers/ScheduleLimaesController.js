@@ -125,8 +125,6 @@ const updateScheduleLimaes = async (req, res, next) => {
   }
 };
 
-import { existsSync, unlinkSync } from "fs";
-
 const deleteScheduleLimaes = async (req, res, next) => {
   if (req.role !== "admin")
     return next(new CustomError("only admin can delete data", 403));

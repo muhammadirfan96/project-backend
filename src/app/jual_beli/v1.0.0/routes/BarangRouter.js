@@ -12,7 +12,8 @@ import {
   updateBarangValidation,
   uploadImageValidation,
 } from "../validations/BarangValidation.js";
-import verifyToken from "../../../middlewares/verifyToken.js";
+import verifyToken from "../../../../middlewares/verifyToken.js";
+
 const BarangRouter = express.Router();
 
 BarangRouter.get("/barangs", verifyToken, findBarangValidation, findBarang);

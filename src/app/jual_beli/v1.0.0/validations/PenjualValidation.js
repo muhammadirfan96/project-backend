@@ -1,6 +1,6 @@
 import { body, param, query } from "express-validator";
 import PenjualModel from "../models/PenjualModel.js";
-import runValidation from "../../../middlewares/runValidation.js";
+import runValidation from "../../../../middlewares/runValidation.js";
 
 const showPenjualValidation = [
   param("id")

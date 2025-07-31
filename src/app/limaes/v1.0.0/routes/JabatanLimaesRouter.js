@@ -5,7 +5,7 @@ import {
   createJabatanLimaes,
   updateJabatanLimaes,
   deleteJabatanLimaes,
-} from "../controllers/JabatanLimaesControllers.js";
+} from "../controllers/JabatanLimaesController.js";
 import {
   showJabatanLimaesValidation,
   findJabatanLimaesValidation,
@@ -13,7 +13,7 @@ import {
   updateJabatanLimaesValidation,
   deleteJabatanLimaesValidation,
 } from "../validations/JabatanLimaesValidation.js";
-import verifyToken from "../../../middlewares/verifyToken.js";
+import verifyToken from "../../../../middlewares/verifyToken.js";
 
 const JabatanLimaesRouter = express.Router();
 

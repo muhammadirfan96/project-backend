@@ -7,7 +7,7 @@ import {
   deleteScheduleLimaes,
   uploadEvidenceLimaes,
   deleteEvidenceLimaes,
-} from "../controllers/ScheduleLimaesControllers.js";
+} from "../controllers/ScheduleLimaesController.js";
 import {
   showScheduleLimaesValidation,
   findScheduleLimaesValidation,
@@ -17,7 +17,7 @@ import {
   uploadEvidenceLimaesValidation,
   deleteEvidenceLimaesValidation,
 } from "../validations/ScheduleLimaesValidation.js";
-import verifyToken from "../../../middlewares/verifyToken.js";
+import verifyToken from "../../../../middlewares/verifyToken.js";
 
 const ScheduleLimaesRouter = express.Router();
 

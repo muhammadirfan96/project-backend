@@ -7,7 +7,7 @@ import {
   showTransaksiPembelianValidation,
   findTransaksiPembelianValidation,
 } from "../validations/TransaksiPembelianValidation.js";
-import verifyToken from "../../../middlewares/verifyToken.js";
+import verifyToken from "../../../../middlewares/verifyToken.js";
 
 const TransaksiPembelianRouter = express.Router();
 

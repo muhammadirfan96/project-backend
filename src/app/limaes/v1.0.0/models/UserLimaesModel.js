@@ -17,6 +17,6 @@ const schema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const UserLimaesModels = mongoose.model("userlimaes", schema);
+const UserLimaesModel = mongoose.model("userlimaes", schema);
 
-export default UserLimaesModels;
+export default UserLimaesModel;

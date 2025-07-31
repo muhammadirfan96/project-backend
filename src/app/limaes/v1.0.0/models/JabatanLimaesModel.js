@@ -11,6 +11,6 @@ const schema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const JabatanLimaesModels = mongoose.model("jabatanlimaes", schema);
+const JabatanLimaesModel = mongoose.model("jabatanlimaes", schema);
 
-export default JabatanLimaesModels;
+export default JabatanLimaesModel;

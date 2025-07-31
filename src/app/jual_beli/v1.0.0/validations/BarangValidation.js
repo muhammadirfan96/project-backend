@@ -1,6 +1,6 @@
 import { body, param, query } from "express-validator";
 import BarangModel from "../models/BarangModel.js";
-import runValidation from "../../../middlewares/runValidation.js";
+import runValidation from "../../../../middlewares/runValidation.js";
 
 const showBarangValidation = [
   param("id")

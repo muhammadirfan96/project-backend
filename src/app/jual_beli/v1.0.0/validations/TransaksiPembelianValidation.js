@@ -1,6 +1,6 @@
 import { body, param, query } from "express-validator";
 import TransaksiPembelianModel from "../models/TransaksiPembelianModel.js";
-import runValidation from "../../../middlewares/runValidation.js";
+import runValidation from "../../../../middlewares/runValidation.js";
 
 const showTransaksiPembelianValidation = [
   param("id")

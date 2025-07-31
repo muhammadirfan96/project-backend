@@ -1,6 +1,6 @@
 import { body, param, query } from "express-validator";
 import PembeliModel from "../models/PembeliModel.js";
-import runValidation from "../../../middlewares/runValidation.js";
+import runValidation from "../../../../middlewares/runValidation.js";
 
 const showPembeliValidation = [
   param("id")

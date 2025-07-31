@@ -2,8 +2,7 @@ import { body, param, query } from "express-validator";
 import ScheduleLimaesModel from "../models/ScheduleLimaesModel.js";
 import runValidation from "../../../../middlewares/runValidation.js";
 import UsersModel from "../../../../models/UsersModel.js";
-import JabatanLimaesModel from "../models/JabatanLimaesModel.js";
-import EquipmentLimaesModel from "../models/EquipmentLimaesModel.js";
+import EquipmentLimaesModels from "../models/EquipmentLimaesModel.js";
 
 const showScheduleLimaesValidation = [
   param("id")
@@ -46,7 +45,7 @@ const createScheduleLimaesValidation = [
     .bail()
     .custom(async (value) => {
       try {
-        const equipment = await EquipmentLimaesModel.findOne({ _id: value });
+        const equipment = await EquipmentLimaesModels.findOne({ _id: value });
         if (!equipment) throw new Error("equipmentlimaes_id not found");
       } catch (err) {
         throw new Error(err.message);
