@@ -3,6 +3,7 @@ import ScheduleLimaesModel from "../models/ScheduleLimaesModel.js";
 import runValidation from "../../../../middlewares/runValidation.js";
 import UsersModel from "../../../../models/UsersModel.js";
 import EquipmentLimaesModels from "../models/EquipmentLimaesModel.js";
+import { existsSync } from "fs";
 
 const showScheduleLimaesValidation = [
   param("id")
@@ -38,7 +39,21 @@ const createScheduleLimaesValidation = [
   body("tanggal")
     .isISO8601()
     .withMessage("tanggal must be a valid date")
-    .bail(),
+    .bail()
+    // unique validation for tanggal
+    .custom(async (value, { req }) => {
+      try {
+        const existingSchedule = await ScheduleLimaesModel.findOne({
+          tanggal: value,
+        });
+        if (existingSchedule) {
+          throw new Error("Schedule with this date already exists");
+        }
+      } catch (err) {
+        throw new Error(err.message);
+      }
+      return true;
+    }),
   body("equipmentlimaes_id")
     .isMongoId()
     .withMessage("invalid equipmentlimaes_id")
@@ -69,24 +84,6 @@ const createScheduleLimaesValidation = [
     .notEmpty()
     .isInt({ min: 0, max: 2 })
     .withMessage("status must be an integer between 0 and 2"),
-  body("evidence").custom((value) => {
-    try {
-      if (!Array.isArray(value)) throw new Error("evidence must be an array");
-      // buat looping isi value hanya jika value adalah array. isi looping dengan validasi apakah index array adalah objek dengan key dan value
-      for (const evidence of value) {
-        if (
-          typeof evidence !== "object" ||
-          !evidence.hasOwnProperty("key") ||
-          !evidence.hasOwnProperty("value")
-        ) {
-          throw new Error("evidence must be an object with key and value");
-        }
-      }
-    } catch (err) {
-      throw new Error(err.message);
-    }
-    return true;
-  }),
   body("penilaian").custom((value) => {
     try {
       if (!Array.isArray(value)) throw new Error("penilaian must be an array");
@@ -110,11 +107,42 @@ const createScheduleLimaesValidation = [
 
 const updateScheduleLimaesValidation = [
   ...showScheduleLimaesValidation,
-  ...createScheduleLimaesValidation,
+  ...createScheduleLimaesValidation.filter((_, index) => index !== 0), // skip tanggal validation
 ];
 const deleteScheduleLimaesValidation = [...showScheduleLimaesValidation];
 const uploadEvidenceLimaesValidation = [...showScheduleLimaesValidation];
-const deleteEvidenceLimaesValidation = [...showScheduleLimaesValidation];
+const deleteEvidenceLimaesValidation = [
+  ...showScheduleLimaesValidation,
+  query("filename").custom(async (value, { req }) => {
+    if (!value) throw new Error("filename is required");
+    // contoh filename atau value : "public/image/1754291741816-code.png"
+    // (.jpg, .jpeg, .png)
+    const validExtensions = [".jpg", ".jpeg", ".png"];
+    const hasValidExtension = validExtensions.some((ext) =>
+      value.endsWith(ext)
+    );
+    if (!hasValidExtension) {
+      throw new Error(
+        "filename must have a valid image extension (.jpg, .jpeg, .png)"
+      );
+    }
+    // check bahwa value merupakan index dari array evidence
+    const response = req.data;
+    if (!response.evidence || !Array.isArray(response.evidence)) {
+      throw new Error("evidence not found or not an array");
+    }
+    if (!response.evidence.includes(value)) {
+      throw new Error("filename not found in evidence array");
+    }
+    // check if file exists
+    if (!existsSync(value)) {
+      throw new Error("file does not exist");
+    }
+    req.filename = value; // store filename in req for later use
+    return true;
+  }),
+  runValidation,
+];
 
 export {
   showScheduleLimaesValidation,

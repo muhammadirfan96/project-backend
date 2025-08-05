@@ -153,6 +153,8 @@ const uploadImage = async (req, res, next) => {
   upload.single("photo")(req, res, (err) => {
     if (err) return next(new CustomError(400, err.message));
 
+    if (!req.file) return next(new CustomError(400, "No image uploaded"));
+
     const response = req.data;
     if (existsSync(response.photo))
       unlink(response.photo, (err) => {

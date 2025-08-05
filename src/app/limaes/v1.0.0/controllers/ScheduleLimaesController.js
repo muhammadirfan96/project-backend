@@ -76,11 +76,6 @@ const createScheduleLimaes = async (req, res, next) => {
         // userlimaes_id yang akan mengerjakan schedule
       ],
       status: 0,
-      evidence: [
-        // { key: "sebelum", value: "" },
-        // { key: "proses", value: "" },
-        // { key: "sesudah", value: "" },
-      ],
       penilaian: [
         // { key: "kualitas", value: 0 },
         // { key: "ketepatan_waktu", value: 0 },
@@ -104,7 +99,7 @@ const updateScheduleLimaes = async (req, res, next) => {
     const response = req.data;
 
     const data = {
-      tanggal: req.body.tanggal,
+      // tanggal: req.body.tanggal,
       equipmentlimaes_id: req.body.equipmentlimaes_id,
       pelaksana: req.body.pelaksana,
       status: req.body.status,
@@ -151,60 +146,123 @@ const deleteScheduleLimaes = async (req, res, next) => {
   }
 };
 
+// const uploadEvidenceLimaes = async (req, res, next) => {
+//   upload.array("evidence", 10)(req, res, (err) => {
+//     if (err) return next(new CustomError(400, err.message));
+
+//     const response = req.data;
+
+//     // ⛔ Jika user tidak mengupload evidence sama sekali
+//     if (!req.files || req.files.length === 0) {
+//       return next(new CustomError(400, "No evidence uploaded"));
+//     }
+
+//     // Hapus file lama jika ada
+//     if (Array.isArray(response.evidence)) {
+//       response.evidence.forEach((oldPath) => {
+//         if (existsSync(oldPath)) {
+//           unlink(oldPath, (err) => {
+//             if (err) console.error("Failed to delete old file:", err.message);
+//           });
+//         }
+//       });
+//     }
+
+//     // Simpan path file baru
+//     const paths = req.files.map((file) => file.path);
+
+//     ScheduleLimaesModel.findByIdAndUpdate(
+//       req.data.id,
+//       { evidence: paths },
+//       { new: true }
+//     )
+//       .then((result) => res.status(200).json(result))
+//       .catch((e) => next(e));
+//   });
+// };
+
 const uploadEvidenceLimaes = async (req, res, next) => {
-  upload.array("evidence", 10)(req, res, (err) => {
+  upload.single("evidence")(req, res, async (err) => {
     if (err) return next(new CustomError(400, err.message));
 
     const response = req.data;
 
-    // Jika ingin hapus file evidence lama (jika overwrite), lakukan di sini
-    if (Array.isArray(response.evidence)) {
-      response.evidence.forEach((oldPath) => {
-        if (existsSync(oldPath)) {
-          unlink(oldPath, (err) => {
-            if (err) return next(new CustomError(500, err.message));
-          });
-        }
-      });
+    // Pastikan ada file yang diupload
+    if (!req.file) {
+      return next(new CustomError(400, "No evidence uploaded"));
     }
 
-    // Ambil path dari file upload baru
-    const paths = req.files.map((file) => file.path);
+    const newFilePath = req.file.path;
 
-    // Simpan array ke database
-    ScheduleLimaesModel.findByIdAndUpdate(
-      req.data.id,
-      {
-        evidence: paths,
-      },
-      { new: true }
-    )
-      .then((result) => res.status(200).json(result))
-      .catch((e) => next(e));
+    // Ambil array evidence lama, pastikan bentuknya array
+    const oldEvidence = Array.isArray(response.evidence)
+      ? response.evidence
+      : [];
+
+    const updatedEvidence = [...oldEvidence, newFilePath];
+
+    try {
+      const updated = await ScheduleLimaesModel.findByIdAndUpdate(
+        response.id,
+        { evidence: updatedEvidence },
+        { new: true }
+      );
+
+      res.status(200).json(updated);
+    } catch (e) {
+      next(e);
+    }
   });
 };
 
 // buat fungsi deleteEvidenceLimaes untuk menghapus file-file evidence berdasarkan id
+// const deleteEvidenceLimaes = async (req, res, next) => {
+//   try {
+//     const response = req.data;
+
+//     // Hapus file evidence dari sistem file
+//     if (Array.isArray(response.evidence)) {
+//       response.evidence.forEach((filePath) => {
+//         if (existsSync(filePath)) {
+//           unlinkSync(filePath);
+//         }
+//       });
+//     }
+
+//     // Hapus evidence dari database
+//     const updatedSchedule = await ScheduleLimaesModel.findByIdAndUpdate(
+//       response.id,
+//       { evidence: [] },
+//       { new: true }
+//     );
+
+//     res.status(200).json(updatedSchedule);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
 const deleteEvidenceLimaes = async (req, res, next) => {
   try {
     const response = req.data;
+    const filename = req.filename;
 
-    // Hapus file evidence dari sistem file
-    if (Array.isArray(response.evidence)) {
-      response.evidence.forEach((filePath) => {
-        if (existsSync(filePath)) {
-          unlinkSync(filePath);
-        }
-      });
+    // Hapus file dari sistem file
+    if (existsSync(filename)) {
+      unlinkSync(filename);
     }
 
-    // Hapus evidence dari database
-    const updatedSchedule = await ScheduleLimaesModel.findByIdAndUpdate(
-      response.id,
-      { evidence: [] },
-      { new: true }
+    // Hapus filePath dari array evidence[]
+    const updatedEvidence = response.evidence.filter(
+      (item) => item !== filename
     );
 
+    // Simpan kembali ke database
+    const updatedSchedule = await ScheduleLimaesModel.findByIdAndUpdate(
+      response.id,
+      { evidence: updatedEvidence },
+      { new: true }
+    );
     res.status(200).json(updatedSchedule);
   } catch (err) {
     next(err);

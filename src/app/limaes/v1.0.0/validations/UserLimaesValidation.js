@@ -45,6 +45,13 @@ const createUserLimaesValidation = [
           _id: value,
         });
         if (!user) throw new Error("user_id not found");
+        // Check if user already has a limaes profile
+        const existingProfile = await UserLimaesModel.findOne({
+          user_id: value,
+        });
+        if (existingProfile) {
+          throw new Error("User already has a limaes profile");
+        }
       } catch (err) {
         throw new Error(err.message);
       }

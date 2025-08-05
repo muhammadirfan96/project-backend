@@ -131,6 +131,8 @@ const uploadPicture = async (req, res, next) => {
   upload.single("picture")(req, res, (err) => {
     if (err) return next(new CustomError(400, err.message));
 
+    if (!req.file) return next(new CustomError(400, "No picture uploaded"));
+
     const response = req.data;
     if (existsSync(response.picture))
       unlink(response.picture, (err) => {
@@ -157,6 +159,8 @@ const uploadTtd = async (req, res, next) => {
 
   upload.single("ttd")(req, res, (err) => {
     if (err) return next(new CustomError(400, err.message));
+
+    if (!req.file) return next(new CustomError(400, "No ttd uploaded"));
 
     const response = req.data;
     if (existsSync(response.ttd))
