@@ -20,10 +20,14 @@ const findUserLimaes = async (req, res, next) => {
 
     const nip = req.query.nip;
     const fullname = req.query.fullname;
+    const jabatanlimaes_id = req.query.jabatanlimaes_id;
+    const bagianlimaes_id = req.query.bagianlimaes_id;
 
     const filter = {
       ...(nip && { nip: { $regex: nip, $options: "i" } }),
       ...(fullname && { fullname: { $regex: fullname, $options: "i" } }),
+      ...(jabatanlimaes_id && { jabatanlimaes_id }),
+      ...(bagianlimaes_id && { bagianlimaes_id }),
       // ...(req.role !== "admin" && { createdBy: req.uid }),
     };
 
@@ -57,6 +61,7 @@ const createUserLimaes = async (req, res, next) => {
       nip: req.body.nip,
       fullname: req.body.fullname,
       jabatanlimaes_id: req.body.jabatanlimaes_id,
+      bagianlimaes_id: req.body.bagianlimaes_id,
       createdBy: req.uid,
       updatedBy: req.uid,
     };
@@ -85,6 +90,7 @@ const updateUserLimaes = async (req, res, next) => {
       nip: req.body.nip,
       fullname: req.body.fullname,
       jabatanlimaes_id: req.body.jabatanlimaes_id,
+      bagianlimaes_id: req.body.bagianlimaes_id,
       // createdBy: req.uid,
       updatedBy: req.uid,
     };

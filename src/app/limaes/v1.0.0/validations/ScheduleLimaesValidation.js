@@ -3,6 +3,7 @@ import ScheduleLimaesModel from "../models/ScheduleLimaesModel.js";
 import runValidation from "../../../../middlewares/runValidation.js";
 import UsersModel from "../../../../models/UsersModel.js";
 import EquipmentLimaesModels from "../models/EquipmentLimaesModel.js";
+import BagianLimaesModel from "../models/BagianLimaesModel.js";
 import { existsSync } from "fs";
 
 const showScheduleLimaesValidation = [
@@ -62,6 +63,19 @@ const createScheduleLimaesValidation = [
       try {
         const equipment = await EquipmentLimaesModels.findOne({ _id: value });
         if (!equipment) throw new Error("equipmentlimaes_id not found");
+      } catch (err) {
+        throw new Error(err.message);
+      }
+      return true;
+    }),
+  body("bagianlimaes_id")
+    .isMongoId()
+    .withMessage("invalid bagianlimaes_id")
+    .bail()
+    .custom(async (value) => {
+      try {
+        const bagian = await BagianLimaesModel.findOne({ _id: value });
+        if (!bagian) throw new Error("bagianlimaes_id not found");
       } catch (err) {
         throw new Error(err.message);
       }

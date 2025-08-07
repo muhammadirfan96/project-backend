@@ -16,6 +16,10 @@ const schema = new mongoose.Schema(
     status: Number,
     evidence: Object,
     penilaian: Object,
+    bagianlimaes_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "bagianlimaes",
+    },
     updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
   },

@@ -20,6 +20,7 @@ const findScheduleLimaes = async (req, res, next) => {
 
     const tanggal = req.query.tanggal;
     const eqipmentlimaes_id = req.query.eqipmentlimaes_id;
+    const bagianlimaes_id = req.query.bagianlimaes_id;
     const pelaksana = req.query.pelaksana;
     const status = req.query.status;
 
@@ -31,9 +32,8 @@ const findScheduleLimaes = async (req, res, next) => {
             $lte: tanggal.split("@")[1],
           },
         }),
-      ...(eqipmentlimaes_id && {
-        eqipmentlimaes_id: { $regex: eqipmentlimaes_id, $options: "i" },
-      }),
+      ...(eqipmentlimaes_id && { eqipmentlimaes_id }),
+      ...(bagianlimaes_id && { bagianlimaes_id }),
       ...(Array.isArray(pelaksana) &&
         pelaksana.length > 0 && {
           pelaksana: { $in: pelaksana },
@@ -72,6 +72,7 @@ const createScheduleLimaes = async (req, res, next) => {
     const data = {
       tanggal: req.body.tanggal,
       equipmentlimaes_id: req.body.equipmentlimaes_id,
+      bagianlimaes_id: req.body.bagianlimaes_id,
       pelaksana: [
         // userlimaes_id yang akan mengerjakan schedule
       ],
@@ -101,6 +102,7 @@ const updateScheduleLimaes = async (req, res, next) => {
     const data = {
       // tanggal: req.body.tanggal,
       equipmentlimaes_id: req.body.equipmentlimaes_id,
+      bagianlimaes_id: req.body.bagianlimaes_id,
       pelaksana: req.body.pelaksana,
       status: req.body.status,
       penilaian: req.body.penilaian,
@@ -146,41 +148,6 @@ const deleteScheduleLimaes = async (req, res, next) => {
   }
 };
 
-// const uploadEvidenceLimaes = async (req, res, next) => {
-//   upload.array("evidence", 10)(req, res, (err) => {
-//     if (err) return next(new CustomError(400, err.message));
-
-//     const response = req.data;
-
-//     // ⛔ Jika user tidak mengupload evidence sama sekali
-//     if (!req.files || req.files.length === 0) {
-//       return next(new CustomError(400, "No evidence uploaded"));
-//     }
-
-//     // Hapus file lama jika ada
-//     if (Array.isArray(response.evidence)) {
-//       response.evidence.forEach((oldPath) => {
-//         if (existsSync(oldPath)) {
-//           unlink(oldPath, (err) => {
-//             if (err) console.error("Failed to delete old file:", err.message);
-//           });
-//         }
-//       });
-//     }
-
-//     // Simpan path file baru
-//     const paths = req.files.map((file) => file.path);
-
-//     ScheduleLimaesModel.findByIdAndUpdate(
-//       req.data.id,
-//       { evidence: paths },
-//       { new: true }
-//     )
-//       .then((result) => res.status(200).json(result))
-//       .catch((e) => next(e));
-//   });
-// };
-
 const uploadEvidenceLimaes = async (req, res, next) => {
   upload.single("evidence")(req, res, async (err) => {
     if (err) return next(new CustomError(400, err.message));
@@ -214,33 +181,6 @@ const uploadEvidenceLimaes = async (req, res, next) => {
     }
   });
 };
-
-// buat fungsi deleteEvidenceLimaes untuk menghapus file-file evidence berdasarkan id
-// const deleteEvidenceLimaes = async (req, res, next) => {
-//   try {
-//     const response = req.data;
-
-//     // Hapus file evidence dari sistem file
-//     if (Array.isArray(response.evidence)) {
-//       response.evidence.forEach((filePath) => {
-//         if (existsSync(filePath)) {
-//           unlinkSync(filePath);
-//         }
-//       });
-//     }
-
-//     // Hapus evidence dari database
-//     const updatedSchedule = await ScheduleLimaesModel.findByIdAndUpdate(
-//       response.id,
-//       { evidence: [] },
-//       { new: true }
-//     );
-
-//     res.status(200).json(updatedSchedule);
-//   } catch (err) {
-//     next(err);
-//   }
-// };
 
 const deleteEvidenceLimaes = async (req, res, next) => {
   try {

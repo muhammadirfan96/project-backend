@@ -3,6 +3,7 @@ import UserLimaesModel from "../models/UserLimaesModel.js";
 import runValidation from "../../../../middlewares/runValidation.js";
 import UsersModel from "../../../../models/UsersModel.js";
 import JabatanLimaesModel from "../models/JabatanLimaesModel.js";
+import BagianLimaesModel from "../models/BagianLimaesModel.js";
 
 const showUserLimaesValidation = [
   param("id")
@@ -85,6 +86,21 @@ const createUserLimaesValidation = [
           _id: value,
         });
         if (!jabatanlimaes) throw new Error("jabatanlimaes_id not found");
+      } catch (err) {
+        throw new Error(err.message);
+      }
+      return true;
+    }),
+  body("bagianlimaes_id")
+    .isMongoId()
+    .withMessage("invalid ID")
+    .bail()
+    .custom(async (value) => {
+      try {
+        const bagianlimaes = await BagianLimaesModel.findOne({
+          _id: value,
+        });
+        if (!bagianlimaes) throw new Error("bagianlimaes_id not found");
       } catch (err) {
         throw new Error(err.message);
       }

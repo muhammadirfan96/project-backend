@@ -11,6 +11,10 @@ const schema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "jabatanlimaes",
     },
+    bagianlimaes_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "bagianlimaes",
+    },
     updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
   },
