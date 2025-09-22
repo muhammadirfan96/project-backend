@@ -22,12 +22,14 @@ const findUserLimaes = async (req, res, next) => {
     const fullname = req.query.fullname;
     const jabatanlimaes_id = req.query.jabatanlimaes_id;
     const bagianlimaes_id = req.query.bagianlimaes_id;
+    const user_id = req.query.user_id;
 
     const filter = {
       ...(nip && { nip: { $regex: nip, $options: "i" } }),
       ...(fullname && { fullname: { $regex: fullname, $options: "i" } }),
       ...(jabatanlimaes_id && { jabatanlimaes_id }),
       ...(bagianlimaes_id && { bagianlimaes_id }),
+      ...(user_id && { user_id }),
       // ...(req.role !== "admin" && { createdBy: req.uid }),
     };
 

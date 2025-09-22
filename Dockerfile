@@ -1,6 +1,10 @@
 # Gunakan image Node.js terbaru
 FROM node:18
 
+# Instal ffmpeg
+# apt-get adalah package manager untuk Debian/Ubuntu
+RUN apt-get update && apt-get install -y ffmpeg
+
 # Set direktori kerja dalam container
 WORKDIR /app
 

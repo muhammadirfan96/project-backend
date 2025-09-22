@@ -1,7 +1,7 @@
 import { body, param, query } from "express-validator";
 import ScheduleLimaesModel from "../models/ScheduleLimaesModel.js";
 import runValidation from "../../../../middlewares/runValidation.js";
-import UsersModel from "../../../../models/UsersModel.js";
+import UserLimaesModel from "../models/UserLimaesModel.js";
 import EquipmentLimaesModels from "../models/EquipmentLimaesModel.js";
 import BagianLimaesModel from "../models/BagianLimaesModel.js";
 import { existsSync } from "fs";
@@ -86,7 +86,7 @@ const createScheduleLimaesValidation = [
       if (!Array.isArray(value)) throw new Error("pelaksana must be an array");
       // buat looping isi value hanya jika value adalah array. isi looping dengan validasi apakah index array ada di database userslimaes
       for (const pelaksanaId of value) {
-        const pelaksana = await UsersModel.findOne({ _id: pelaksanaId });
+        const pelaksana = await UserLimaesModel.findOne({ _id: pelaksanaId });
         if (!pelaksana) throw new Error("pelaksana not found");
       }
     } catch (err) {
